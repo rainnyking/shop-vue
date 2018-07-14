@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_712150_3ivxtv4hb1t.css">
+    <title>shop</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+  <script type="text/javascript" src="./static/mui.min.js"></script>
+  <script>
+    document.addEventListener('plusready', function() {
+      var webview = plus.webview.currentWebview();
+      plus.key.addEventListener('backbutton', function() {
+        webview.canBack(function(e) {
+          if(e.canBack) {
+                 webview.back();
+//             history.back(-1);
+          } else {
+            //webview.close(); //hide,quit
+            //plus.runtime.quit();
+            mui.plusReady(function() {
+              //首页返回键处理
+              //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+              var first = null;
+              plus.key.addEventListener('backbutton', function() {
+                //首次按键，提示‘再按一次退出应用’
+                if (!first) {
+                  first = new Date().getTime();
+                  mui.toast('再按一次退出应用');
+                  setTimeout(function() {
+                    first = null;
+                  }, 1000);
+                } else {
+                  if (new Date().getTime() - first < 1500) {
+                    plus.runtime.quit();
+                  }
+                }
+              }, false);
+            });
+          }
+        })
+      });
+    });
+  </script>
+</html>
